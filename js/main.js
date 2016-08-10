@@ -2,20 +2,23 @@ var setBackground,
     colorPicker,
     resetInput,
     colorSchema,
-    colorLookup;
+    colorLookup,
+    diffCalc;
+
+var userInput = [255,0,180];
 
 colorSchema = [
   {
     name: "Piggy Pink",
-    red: 1,
-    green: 2,
-    blue: 3
+    red: 255,
+    green: 182,
+    blue: 193
   },
   {
     name: "Sun Yellow",
-    red: 1,
-    green: 2,
-    blue: 3
+    red: 255,
+    green: 255,
+    blue: 0
   }
 ];    
 
@@ -30,6 +33,10 @@ colorPicker.addEventListener("change", function(pickedColor){
   setBackground(pickedColor);
 
 });
+
+diffCalc = function(a, b) {
+  return Math.abs(a - b);
+};
 
 // Set backgrund color
 setBackground = function(color){
@@ -47,6 +54,26 @@ colorLookup = function(red, green, blue){
 
 };
 
-for (var i = 0; i < colorSchema.length; i++) {
-  console.log(colorSchema[i].name);
-}
+var matchColor = function(input){
+  var redDiff,
+      greenDiff,
+      blueDiff,
+      diffPoints,
+      matchArray;
+
+  matchArray = [];
+
+  for (var i = 0; i < colorSchema.length; i++) {
+
+    redDiff = diffCalc(input[0], colorSchema[i].red);
+    greenDiff = diffCalc(input[1], colorSchema[i].green);
+    blueDiff = diffCalc(input[2], colorSchema[i].blue);
+
+    diffPoints = redDiff + greenDiff + blueDiff;
+
+    matchArray.push(diffPoints);
+  }
+  return matchArray;
+};
+
+var match = matchColor(userInput);
